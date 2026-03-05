@@ -1,0 +1,73 @@
+{% extends 'bookings/base.html' %}
+
+{% block title %}Book Seats - {{ movie.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>{{ movie.title }}</h1>
+        <p class="text-muted">{{ movie.description }}</p>
+
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        <h3 class="mt-4">Select a Seat</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row g-3 mb-4">
+                {% for seat in seats %}
+                    <div class="col-6 col-md-3">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input seat-input"
+                                type="radio"
+                                name="seat_id"
+                                value="{{ seat.id }}"
+                                id="seat_{{ seat.id }}"
+                                {% if seat.status == 'booked' %}disabled{% endif %}
+                            >
+                            <label
+                                class="form-check-label seat-label {% if seat.status == 'booked' %}disabled-seat{% endif %}"
+                                for="seat_{{ seat.id }}"
+                            >
+                                Seat {{ seat.seat_number }}
+                                {% if seat.status == 'booked' %}
+                                    <span class="badge bg-danger">Booked</span>
+                                {% else %}
+                                    <span class="badge bg-success">Available</span>
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="d-grid gap-2 d-sm-flex">
+                <button type="submit" class="btn btn-primary btn-lg" onclick="return confirm('Confirm your booking?')">
+                    Confirm Booking
+                </button>
+                <a href="{% url 'bookings:movie_list' %}" class="btn btn-secondary btn-lg">Back to Movies</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-dark">
+                <h5>Movie Details</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Title:</strong> {{ movie.title }}</p>
+                <p><strong>Duration:</strong> {{ movie.duration }} minutes</p>
+                <p><strong>Release Date:</strong> {{ movie.release_date|date:"M d, Y" }}</p>
+                <p><strong>Available Seats:</strong>
+                    <span class="badge bg-success">
+                        {{ seats|dictsort:"status"|length }} Total
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

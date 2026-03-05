@@ -1,0 +1,16 @@
+{% extends 'bookings/base.html' %}
+
+{% block title %}Register - Movie Theater Booking{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="alert alert-info">
+            <h4>Registration</h4>
+            <p>Currently, new users need to be created through the admin panel for security purposes.</p>
+            <p>Please contact the administrator to create a new account, or use the login page if you already have credentials.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary">Go to Login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
