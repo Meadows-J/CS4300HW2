@@ -31,11 +31,13 @@ class Seat(models.Model):
 class Booking(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='bookings')
     seat = models.ForeignKey(Seat, on_delete=models.CASCADE, related_name='bookings')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings', null=True, blank=True)
     booking_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('seat', 'movie')
 
     def __str__(self):
-        return f"{self.user.username} - {self.movie.title} - Seat {self.seat.seat_number}"
+        if self.user:
+            return f"{self.user.username} - {self.movie.title} - Seat {self.seat.seat_number}"
+        return f"Guest - {self.movie.title} - Seat {self.seat.seat_number}"

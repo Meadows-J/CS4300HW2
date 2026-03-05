@@ -6,9 +6,12 @@
     <title>{% block title %}Movie Theater Booking{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        * {
+            color-scheme: light;
+        }
         body {
-            background-color: #1a1a1a;
-            color: #ffffff;
+            background-color: #1a1a1a !important;
+            color: #ffffff !important;
             font-family: 'Arial', sans-serif;
         }
         .navbar {
@@ -18,6 +21,10 @@
         .navbar-brand {
             font-weight: bold;
             font-size: 1.5rem;
+            color: #ffffff !important;
+        }
+        .nav-link {
+            color: #ffffff !important;
         }
         .container {
             max-width: 1000px;
@@ -25,47 +32,78 @@
             margin-bottom: 2rem;
         }
         .card {
-            background-color: #2a2a2a;
-            border: 1px solid #444;
+            background-color: #2a2a2a !important;
+            border: 1px solid #444 !important;
             border-radius: 8px;
             transition: transform 0.3s ease;
+            color: #ffffff !important;
+        }
+        .card-title {
+            color: #ffffff !important;
+        }
+        .card-text {
+            color: #ffffff !important;
         }
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(214, 40, 40, 0.3);
         }
         .btn-primary {
-            background-color: #d62828;
-            border-color: #d62828;
+            background-color: #d62828 !important;
+            border-color: #d62828 !important;
+            color: #ffffff !important;
         }
         .btn-primary:hover {
-            background-color: #c41e1e;
-            border-color: #c41e1e;
+            background-color: #c41e1e !important;
+            border-color: #c41e1e !important;
+        }
+        .btn-secondary {
+            color: #ffffff !important;
         }
         .list-group-item {
-            background-color: #2a2a2a;
-            border-color: #444;
-            color: #ffffff;
+            background-color: #2a2a2b !important;
+            border-color: #444 !important;
+            color: #ffffff !important;
         }
         .list-group-item:hover {
-            background-color: #333;
+            background-color: #333 !important;
         }
-        h2, h1 {
-            color: #d62828;
+        h1, h2, h3, h4, h5, h6 {
+            color: #d62828 !important;
+        }
+        h1 {
+            margin-bottom: 2rem;
+            font-weight: bold;
+        }
+        h2 {
             margin-bottom: 2rem;
             font-weight: bold;
         }
         .footer {
-            background-color: #0a0a0a;
+            background-color: #0a0a0a !important;
             text-align: center;
             padding: 2rem;
             margin-top: 3rem;
-            border-top: 1px solid #444;
+            border-top: 1px solid #444 !important;
+            color: #ffffff !important;
         }
         .alert {
-            background-color: #d62828;
-            border: none;
-            color: white;
+            background-color: #d62828 !important;
+            border: none !important;
+            color: white !important;
+        }
+        .alert-info {
+            background-color: #004085 !important;
+            border-color: #003366 !important;
+        }
+        strong {
+            color: #ffffff !important;
+        }
+        p {
+            color: #ffffff !important;
+        }
+        li {
+            color: #ffffff !important;
         }
     </style>
 </head>
@@ -78,21 +116,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'bookings:movie_list' %}">Movies</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'bookings:booking_history' %}">My Bookings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Logout ({{ user.username }})</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
-                        </li>
-                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'bookings:movie_list' %}">Movies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'bookings:booking_history' %}">Bookings</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -111,7 +140,7 @@
     </div>
 
     <footer class="footer">
-        <p>&copy; 2024 Movie Theater Booking System. All rights reserved.</p>
+        <p>Movie Theater Booking System</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

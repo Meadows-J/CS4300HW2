@@ -148,21 +148,14 @@ class BookingViewTest(TestCase):
                 status=Seat.AVAILABLE
             )
 
-    def test_book_seat_without_login(self):
-        """Test that unauthenticated users cannot book seats"""
-        response = self.client.get(reverse('bookings:book_seat', args=[self.movie.id]))
-        self.assertEqual(response.status_code, 302)  # Redirect to login
-
-    def test_book_seat_with_login(self):
-        """Test booking a seat when logged in"""
-        self.client.login(username='testuser', password='testpass123')
+    def test_book_seat_view(self):
+        """Test booking a seat view"""
         response = self.client.get(reverse('bookings:book_seat', args=[self.movie.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'bookings/seat_booking.html')
 
     def test_create_booking(self):
         """Test creating a booking"""
-        self.client.login(username='testuser', password='testpass123')
         seat = Seat.objects.first()
         response = self.client.post(
             reverse('bookings:book_seat', args=[self.movie.id]),
@@ -172,7 +165,6 @@ class BookingViewTest(TestCase):
 
         # Verify booking was created
         booking = Booking.objects.first()
-        self.assertEqual(booking.user, self.user)
         self.assertEqual(booking.seat, seat)
 
         # Verify seat status changed
@@ -181,8 +173,6 @@ class BookingViewTest(TestCase):
 
     def test_booking_history_view(self):
         """Test booking history view"""
-        self.client.login(username='testuser', password='testpass123')
-
         # Create a booking
         seat = Seat.objects.first()
         Booking.objects.create(
@@ -282,14 +272,25 @@ class BookingAPITest(TestCase):
         )
 
     def test_booking_requires_authentication(self):
-        """Test that booking API requires authentication"""
+        """Test that booking API is accessible without authentication"""
         response = self.client.get('/api/bookings/')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_bookings_api(self):
+        """Test getting all bookings via API"""
+        # Create a booking
+        Booking.objects.create(
+            movie=self.movie,
+            seat=self.seat,
+            user=self.user
+        )
+
+        response = self.client.get('/api/bookings/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
 
     def test_get_user_bookings_api(self):
-        """Test getting user bookings via API"""
-        self.client.force_authenticate(user=self.user)
-
+        """Test getting bookings via API without authentication"""
         # Create a booking
         Booking.objects.create(
             movie=self.movie,
@@ -303,7 +304,6 @@ class BookingAPITest(TestCase):
 
     def test_create_booking_api(self):
         """Test creating a booking via API"""
-        self.client.force_authenticate(user=self.user)
         data = {
             'movie': self.movie.id,
             'seat': self.seat.id,
