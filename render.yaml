@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: movie-theater-booking
+    env: python
+    plan: free
+    buildCommand: >-
+      cd homework2 &&
+      pip install -r requirements.txt &&
+      python manage.py collectstatic --noinput &&
+      python manage.py migrate
+    startCommand: cd homework2 && python manage.py runserver 0.0.0.0:$PORT
+    workingDirectory: /
+    envVars:
+      - key: DEBUG
+        value: "false"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: "*.onrender.com"
+      - key: DATABASE_URL
+        value: ""
