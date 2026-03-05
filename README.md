@@ -39,6 +39,8 @@ python manage.py test
 This will run all unit tests
 
 ## Deployment to Render
+The main URL https://movie-theater-booking-5swg.onrender.com
+To fill out the database go to https://movie-theater-booking-5swg.onrender.com/api/movies/ to add any movies you want.
 
 ## AI Usage Notes
 I already have a lot of Dijango experince from previous classes so I read over all the documentation as a reminder. I used Cluade Haiku 4.5 in the terminal to help build out the project as this is the methoad my group has decided to do the project with. I practiced asking it to build out feature and reviewd all the code before using it. I used a variety of types of promt to experiment what claude would do or each feature and used a lot of its code in the final product after I tweaked it and reviewed it.
